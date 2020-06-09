@@ -1,0 +1,53 @@
+<mvc:View controllerName="ovly.chart.controller.View1" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:data="sap.viz.ui5.data"
+    xmlns:feeds="sap.viz.ui5.controls.common.feeds"
+    displayBlock="true" 
+    xmlns="sap.m" >
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+						<Select items="{/Countries}">
+							<items>
+								<core:Item key="{Id}" text="{Name}" /> 
+							</items>
+						</Select>
+						
+						<viz:VizFrame vizType="line" vizProperties="{chart>/}">
+							<viz:dataset>
+								<data:FlattenedDataset data="{/SalesByRegions}">
+									<!--<data:data></data:data> //Agragation bind somente-->
+									
+									<data:dimensions>
+										<data:DimensionDefinition name="Ano" value="{Year}"/>
+										<data:DimensionDefinition name="Mes" value="{Month}"/>
+									</data:dimensions>
+									
+									<data:measures>
+										<data:MeasureDefinition name="Total" value="{Revenue}"/>
+										<data:MeasureDefinition name="MetadeDoTotal" value="{= ${Revenue} / 2 }"/> <!--//Expressão-->
+									</data:measures>
+
+								</data:FlattenedDataset>
+							</viz:dataset>
+							
+							<viz:feeds>
+								<!--A soma da quantidade de measures mais dimensions é igual ao numero de feeds. -->
+								<feeds:FeedItem type="Dimension" values="Ano" uid="categoryAxis"/>
+								<feeds:FeedItem type="Dimension" values="Mes" uid="categoryAxis"/>
+								<feeds:FeedItem type="Measure"   values="Total" uid="valueAxis"/>
+								<feeds:FeedItem type="Measure"   values="MetadeDoTotal" uid="valueAxis"/>
+							</viz:feeds>
+						
+						</viz:VizFrame>
+						
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
